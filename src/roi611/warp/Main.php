@@ -15,6 +15,8 @@ use pocketmine\world\Position;
 
 class Main extends PluginBase implements Listener {
 
+    private $config;
+    
     public function onEnable():void{
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
