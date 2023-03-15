@@ -36,84 +36,75 @@ class Main extends PluginBase implements Listener {
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 
-        if($sender instanceof Player) {
+        if(!$sender instanceof Player) {
+            $sender->sendMessage("ゲーム内で実行してください");
+            return true;
+        }
 
-            if (isset($args[0])) {
+        if (isset($args[0])) {
 
-                switch($args[0]){
+            switch($args[0]){
+            
+                case "on":
+
+                    $this->config->set("jotp", true);
+                    $this->config->save(); 
+                    $sender->sendMessage("§4[jotp]§r sptpを有効にしました");
+
+                break;
+
+                case "off":
+
+                    $this->config->set("jotp", false);
+                    $this->config->save(); 
+                    $sender->sendMessage("§4[jotp]§r sptpを無効にしました");
+
+                break;
+
+                case "opon":
+
+                    $this->config->set("optp", true);
+                    $this->config->save(); 
+                    $sender->sendMessage("§4[jotp]§r opのsptpを有効にしました");
+
+                break;
+
+                case "opoff":
+
+                    $this->config->set("optp", false);
+                    $this->config->save(); 
+                    $sender->sendMessage("§4[jotp]§r opのsptpを無効にしました");
+
+                break;
+
+                case "set":
+
+                    $p = $sender->getPosition();
+                    $x = $p->getFloorX();
+                    $y = $p->getFloorY();
+                    $z = $p->getFloorZ();
+                    $level = $sender->getWorld()->getDisplayName();
+                    $this->config->set("X", $x);
+                    $this->config->set("Y", $y);
+                    $this->config->set("Z", $z);
+                    $this->config->set("World", $level);
+                    $this->config->save(); 
+                    $sender->sendMessage("§4[jotp]§r {$x},{$y},{$z},{$level}にjotp地点を設定しました");
+
+                break;
                 
-                    case "on":
+                case "help":
+                    $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
+                break;
 
-                        $this->config->set("jotp", true);
-                        $this->config->save(); 
-                        $sender->sendMessage("§4[jotp]§r sptpを有効にしました");
+                default:
+                    $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
 
-                    break;
-
-                    case "off":
-
-                        $this->config->set("jotp", false);
-                        $this->config->save(); 
-                        $sender->sendMessage("§4[jotp]§r sptpを無効にしました");
-
-                    break;
-
-                    case "opon":
-
-                        $this->config->set("optp", true);
-                        $this->config->save(); 
-                        $sender->sendMessage("§4[jotp]§r opのsptpを有効にしました");
-
-                    break;
-
-                    case "opoff":
-
-                        $this->config->set("optp", false);
-                        $this->config->save(); 
-                        $sender->sendMessage("§4[jotp]§r opのsptpを無効にしました");
-
-                    break;
-
-                    case "set":
-
-                        $p = $sender->getPosition();
-                        $x = $p->getFloorX();
-                        $y = $p->getFloorY();
-                        $z = $p->getFloorZ();
-                        $level = $sender->getWorld()->getDisplayName();
-                        $this->config->set("X", $x);
-                        $this->config->set("Y", $y);
-                        $this->config->set("Z", $z);
-                        $this->config->set("World", $level);
-                        $this->config->save(); 
-                        $sender->sendMessage("§4[jotp]§r {$x},{$y},{$z},{$level}にjotp地点を設定しました");
-
-                    break;
-                    
-                    case "help":
-
-                        $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
-
-                    break;
-
-                    default:
-
-                        $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
-
-                    break;
-
-                }
-
-
-            } else {
-                $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
             }
 
 
         } else {
-
-            $sender->sendMessage("ゲーム内で実行してください");
-
+            $sender->sendMessage("/jotp on : JoinTeleportを有効にします(/join setをしてから実行にしてください)\n/jotp off : JoinTereleportを無効にします\n/jotp opon : opもJoin時にテレポートさせます\n/jotp onoff : opがJoin時にテレポートさせなくします\n/jotp set : スポーン地点を設定します");
         }
 
         return true;
@@ -138,14 +129,12 @@ class Main extends PluginBase implements Listener {
 
             if($joinop === true) {
 
-                    $player->teleport($pos);
+                $player->teleport($pos);
 
             } else {
 
                 if(!(Server::getInstance()->isOp($player->getName()))){
-
                     $player->teleport($pos);
-                    
                 }
 
             }
